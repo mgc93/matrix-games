@@ -152,20 +152,19 @@ app.get("/", function (request, response) {
 // }
 // );
 
-
 app.post("/data", function (req, res) {
     req.setTimeout(0);
   
-    const payload    = JSON.stringify(req.body);
+    const data    = JSON.stringify(req.body);
     const id         = req.body[0].subject.replace(/'/g, "");
     const filename   = `${Date.now()}.json`;
     const foldername = id;
   
-    saveDropbox(payload, filename, foldername)
-      .then(result => {
-        // Dropbox returns metadata with a path_display field
-        res.json({ success: true, path: result.result.path_display });
-      })
+    saveDropbox(data, filename, foldername)
+    //   .then(result => {
+    //     // Dropbox returns metadata with a path_display field
+    //     res.json({ success: true, path: result.result.path_display });
+    //   })
       .catch(err => {
         console.error("Dropbox save error:", err);
         res.status(500).json({
@@ -174,6 +173,28 @@ app.post("/data", function (req, res) {
         });
       });
   });
+
+// app.post("/data", function (req, res) {
+//     req.setTimeout(0);
+  
+//     const payload    = JSON.stringify(req.body);
+//     const id         = req.body[0].subject.replace(/'/g, "");
+//     const filename   = `${Date.now()}.json`;
+//     const foldername = id;
+  
+//     saveDropbox(payload, filename, foldername)
+//       .then(result => {
+//         // Dropbox returns metadata with a path_display field
+//         res.json({ success: true, path: result.result.path_display });
+//       })
+//       .catch(err => {
+//         console.error("Dropbox save error:", err);
+//         res.status(500).json({
+//           success: false,
+//           error: err.error?.error_summary || err.message
+//         });
+//       });
+//   });
 
 app.post("/subject-status", function (request, response) {
     subject_id = request.body.subject_id;
