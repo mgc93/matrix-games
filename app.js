@@ -43,29 +43,52 @@ const dbx = new Dropbox({
     fetch
 });
 
-
+async function saveDropbox(content, filename, foldername) {
+    const uploadArgs = {
+      path: `/${foldername}/${filename}`,
+      contents: content,
+      mode: { ".tag": "overwrite" }
+    };
   
-function saveDropbox(content, filename, foldername) {
-return dbx.filesGetMetadata({ path: `/${foldername}` })
-    .catch(err => {
-    // if the folder truly isn’t there, create it
-    if (
-        err.error?.error?.['.tag'] === 'path' &&
-        err.error.error.path['.tag'] === 'not_found'
-    ) {
-        return dbx.filesCreateFolder({ path: `/${foldername}` });
+    try {
+      // first attempt
+      return await dbx.filesUpload(uploadArgs);
+    } catch (err) {
+      // if the folder is missing, create it then retry
+      if (
+        err.error?.error?.[".tag"] === "path" &&
+        err.error.error.path[".tag"] === "not_found"
+      ) {
+        await dbx.filesCreateFolderV2({ path: `/${foldername}` });
+        return dbx.filesUpload(uploadArgs);
+      }
+      // rethrow any other error
+      throw err;
     }
-    // otherwise re-throw for the outer catch to handle
-    throw err;
-    })
-    .then(() =>
-    dbx.filesUpload({
-        path: `/${foldername}/${filename}`,
-        contents: content,
-        mode: { '.tag': 'overwrite' }
-    })
-    );
-}
+  }
+  
+  
+// function saveDropbox(content, filename, foldername) {
+//     return dbx.filesGetMetadata({ path: `/${foldername}` })
+//         .catch(err => {
+//         // if the folder truly isn’t there, create it
+//         if (
+//             err.error?.error?.['.tag'] === 'path' &&
+//             err.error.error.path['.tag'] === 'not_found'
+//         ) {
+//             return dbx.filesCreateFolder({ path: `/${foldername}` });
+//         }
+//         // otherwise re-throw for the outer catch to handle
+//         throw err;
+//         })
+//         .then(() =>
+//         dbx.filesUpload({
+//             path: `/${foldername}/${filename}`,
+//             contents: content,
+//             mode: { '.tag': 'overwrite' }
+//         })
+//         );
+// }
 
 
 // // old
@@ -132,27 +155,25 @@ app.get("/", function (request, response) {
 
 app.post("/data", function (req, res) {
     req.setTimeout(0);
-
+  
     const payload    = JSON.stringify(req.body);
     const id         = req.body[0].subject.replace(/'/g, "");
     const filename   = `${Date.now()}.json`;
     const foldername = id;
-
-    saveDropbox(payload, filename, foldername)
-        .then(result => {
-        // success – send back the Dropbox path
-        res.json({ success: true, path: result.path_display });
-        })
-        .catch(err => {
-        console.error("Dropbox save error:", err);
-        // send 500 plus the real error summary
-        res.status(500).json({
-            success: false,
-            error: err.error?.error_summary || err.message
-        });
-        });
-});
   
+    saveDropbox(payload, filename, foldername)
+      .then(result => {
+        // Dropbox returns metadata with a path_display field
+        res.json({ success: true, path: result.result.path_display });
+      })
+      .catch(err => {
+        console.error("Dropbox save error:", err);
+        res.status(500).json({
+          success: false,
+          error: err.error?.error_summary || err.message
+        });
+      });
+  });
 
 app.post("/subject-status", function (request, response) {
     subject_id = request.body.subject_id;
