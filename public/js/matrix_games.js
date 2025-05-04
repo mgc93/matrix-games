@@ -1916,7 +1916,7 @@ Thank you for signing up!`);
     // Run the experiment
     jsPsych.run([
         preload,
-        // fullscreen_enter,
+        fullscreen_enter,
         experiment_overview,
         choice_instructions,
         // control_question_choice_1,
@@ -1949,7 +1949,7 @@ Thank you for signing up!`);
         // belief_rt_instructions,
         // belief_rt_overview,
         // game_belief_rt,
-        // fullscreen_exit,
+        fullscreen_exit,
         success_guard
     ]);
 
