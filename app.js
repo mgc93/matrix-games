@@ -115,21 +115,25 @@ app.get("/", function (request, response) {
 
 app.post("/data", function (req, res) {
     req.setTimeout(0);
-  
-    const data    = JSON.stringify(req.body);
-    const id         = req.body[0].subject.replace(/'/g, "");
-    const filename   = `${Date.now()}.json`;
+
+    const data = JSON.stringify(req.body);
+    const id = req.body[0].subject.replace(/'/g, "");
+    const filename = `${Date.now()}.json`;
     const foldername = id;
-  
+
     saveDropbox(data, filename, foldername)
-      .catch(err => {
-        console.error("Dropbox save error:", err);
-        res.status(500).json({
-          success: false,
-          error: err.error?.error_summary || err.message
+        .then(result => {
+            // ← send a 200 success back
+            res.json({ success: true, path: (result.result || result).path_display });
+        })
+        .catch(err => {
+            console.error("Dropbox save error:", err);
+            res.status(500).json({
+                success: false,
+                error: err.error?.error_summary || err.message
+            });
         });
-      });
-  });
+});
 
 
 
