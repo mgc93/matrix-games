@@ -113,21 +113,28 @@ app.get("/", function (request, response) {
 })
 
 
-app.post("/data", function (req, res) {
+app.post("/data", (req, res) => {
     req.setTimeout(0);
 
-    const data = JSON.stringify(req.body);
+    const payload = JSON.stringify(req.body);
     const id = req.body[0].subject.replace(/'/g, "");
     const filename = `${Date.now()}.json`;
     const foldername = id;
 
-    saveDropbox(data, filename, foldername)
-        .then(result => {
-            // ← send a 200 success back
-            res.json({ success: true, path: (result.result || result).path_display });
+    saveDropbox(payload, filename, foldername)
+        .then(dropboxRes => {
+            // Dropbox SDK v4/5 returns metadata directly; v10+ wraps it in `.result`
+            const meta = dropboxRes.result || dropboxRes;
+
+            // send 200 OK with the Dropbox path
+            res.json({
+                success: true,
+                path: meta.path_display
+            });
         })
         .catch(err => {
             console.error("Dropbox save error:", err);
+            // send 500 with the real error summary
             res.status(500).json({
                 success: false,
                 error: err.error?.error_summary || err.message
