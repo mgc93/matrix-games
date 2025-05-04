@@ -44,30 +44,29 @@ const dbx = new Dropbox({
 });
 
 
-function saveDropbox(content, filename, foldername) {
-    return dbx.filesGetMetadata({ path: `/${foldername}` })
-      .catch(err => {
-        // if it really is “folder not found”, create it
-        if (
-          err.error &&
-          err.error.error &&
-          err.error.error['.tag'] === 'path' &&
-          err.error.error.path['.tag'] === 'not_found'
-        ) {
-          return dbx.filesCreateFolder({ path: `/${foldername}` });
-        }
-        // otherwise bubble it up
-        throw err;
-      })
-      .then(() => {
-        return dbx.filesUpload({
-          path: `/${foldername}/${filename}`,
-          contents: content,
-          mode: { '.tag': 'overwrite' }
-        });
-      });
-  }
   
+function saveDropbox(content, filename, foldername) {
+return dbx.filesGetMetadata({ path: `/${foldername}` })
+    .catch(err => {
+    // if the folder truly isn’t there, create it
+    if (
+        err.error?.error?.['.tag'] === 'path' &&
+        err.error.error.path['.tag'] === 'not_found'
+    ) {
+        return dbx.filesCreateFolder({ path: `/${foldername}` });
+    }
+    // otherwise re-throw for the outer catch to handle
+    throw err;
+    })
+    .then(() =>
+    dbx.filesUpload({
+        path: `/${foldername}/${filename}`,
+        contents: content,
+        mode: { '.tag': 'overwrite' }
+    })
+    );
+}
+
 
 // // old
 // saveDropbox = function (content, filename, foldername) {
@@ -130,25 +129,30 @@ app.get("/", function (request, response) {
 // }
 // );
 
+
 app.post("/data", function (req, res) {
-    const data    = JSON.stringify(req.body);
-    const id      = req.body[0].subject.replace(/'/g, "");
-    const filename  = `${+new Date()}.json`;
+    req.setTimeout(0);
+
+    const payload    = JSON.stringify(req.body);
+    const id         = req.body[0].subject.replace(/'/g, "");
+    const filename   = `${Date.now()}.json`;
     const foldername = id;
-  
-    saveDropbox(data, filename, foldername)
-      .then(dropboxResult => {
-        // success! let the client know
-        res.json({ success: true, path: dropboxResult.path_display });
-      })
-      .catch(err => {
+
+    saveDropbox(payload, filename, foldername)
+        .then(result => {
+        // success – send back the Dropbox path
+        res.json({ success: true, path: result.path_display });
+        })
+        .catch(err => {
         console.error("Dropbox save error:", err);
+        // send 500 plus the real error summary
         res.status(500).json({
-          success: false,
-          message: err.error?.error_summary || err.message
+            success: false,
+            error: err.error?.error_summary || err.message
         });
-      });
-  });
+        });
+});
+  
 
 app.post("/subject-status", function (request, response) {
     subject_id = request.body.subject_id;
