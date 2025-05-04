@@ -132,7 +132,7 @@ function startExperiment() {
                     You can close the browser to end the experiment now. </br>
                     </div>`);
                 }
-                if (trialcounter == 10) { 
+                if (trialcounter % 10 == 0) { 
                     console.log(`Current trial counter: ${trialcounter}`);
                     on_finish_callback();
                     jsPsych.data.reset();
@@ -1935,22 +1935,22 @@ Thank you for signing up!`);
         game_choice,
         choice_rt_instructions,
         choice_rt_overview,
-        game_player_choice, 
+        // game_player_choice, 
         // break_time,
-        belief_instructions,
+        // belief_instructions,
         // control_question_belief_1,
         // control_question_belief_1_response,
         // control_question_belief_2,
         // control_question_belief_2_response,
         // control_question_belief_3,
         // control_question_belief_3_response,
-        belief_overview,
-        game_belief,
-        belief_rt_instructions,
-        belief_rt_overview,
-        game_belief_rt
+        // belief_overview,
+        // game_belief,
+        // belief_rt_instructions,
+        // belief_rt_overview,
+        // game_belief_rt,
         // fullscreen_exit,
-        // success_guard
+        success_guard
     ]);
 
 
