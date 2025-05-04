@@ -1,0 +1,117 @@
+/* table and slider */
+.container-multi-belief {
+  position: absolute;
+  top: 2vh; /* Keep the table always 5% from top of screen */
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 70vw; 
+  height: 50vh; 
+  max-height: 70vh; /* Prevent overflow */
+  overflow-y: visible; /* Scroll if needed on smaller screens */
+  gap: 2vh; /* evenly spaced between children */
+}
+
+/* slider */
+.jspsych-table-slider-response-container { /* Updated class name to match new plugin name */
+  width: 70vw;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 5vh;
+}
+
+/* button */
+#jspsych-table-slider-response-next { /* Updated ID to match new plugin name */
+  display: flex;
+  justify-content: center;
+  gap: 10%;
+  margin-top: 2vh; /* add space below slider */
+}
+
+/* prompt */
+#display_prompt_belief {
+  font-family: Arial, sans-serif;
+  font-size: clamp(15px, 1.8vh + 0.5vw, 24px);
+  color: white;
+  text-align: center;
+  margin-top: 5vh; /* add space below slider */
+}
+
+.tf .container-multi-belief-column {
+  width: 1%;
+  border-width: 2px;
+}
+
+.tf {
+  position: relative; /* NOT fixed */
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 70vw;
+  height: 50vh;
+  border: 4px solid white;
+  box-sizing: border-box;
+}
+
+.tf td {
+  border-color: white;
+  border-style: solid;
+  border-width: 1px;
+  font-family: Arial, sans-serif;
+  font-size: 30px;
+  font-weight: bold;
+  overflow: hidden;
+  padding: 1vh 1vw; /* 10px 20px */
+  word-break: normal;
+}
+
+.tf .tf-ti2t {
+  color: #32cb00;
+  text-align: center;
+  font-size: clamp(15px, 1.8vh + 0.5vw, 30px); /*3vh */
+  vertical-align: top;
+  border-right: 1px solid transparent;
+  border-top: 1px solid transparent;
+  padding: 5vh 3vh;
+}
+
+.tf .tf-baqh-other {
+  text-align: center;
+  vertical-align: center;
+  height: 1vh;
+  border-width: 2px;
+}
+
+.tf .tf-baqh-other #action-other-left {
+  color: #0080ff;
+}
+
+.tf .tf-baqh-other #action-other-right {
+  color: white;
+}
+
+.tf .tf-viqs {
+  color: #fe0000;
+  text-align: center;
+  font-size: clamp(15px, 1.8vh + 0.5vw, 30px); /*3vh */
+  vertical-align: top;
+  border-left: 1px solid transparent;
+  border-bottom: 1px solid transparent;
+  padding: 5vh 3vh;
+}
+
+.tf .tf-0lax {
+  text-align: left;
+  vertical-align: top;
+  padding: 5vh 3vh;
+}
+
+.tf .tf-0lax-top {
+  text-align: left;
+  vertical-align: top;
+  border: 1px solid transparent;
+  padding: 5vh 3vh;
+}
