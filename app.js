@@ -41,31 +41,58 @@ const dbx = new Dropbox({
 //     }
 //   }
   
-  
-function saveDropbox(content, filename, foldername) {
-    return dbx.filesGetMetadata({ path: `/${foldername}` })
-        .catch(err => {
-            // if the folder truly isn’t there, create it
-            if (
-                err.error?.error?.['.tag'] === 'path' &&
-                err.error.error.path['.tag'] === 'not_found'
-            ) {
-                return dbx.filesCreateFolder({ 
-                    path: `/${foldername}`, 
-                    autorename: false 
-                });
-            }
-            // otherwise re-throw for the outer catch to handle
-            throw err;
-        })
-        .then(() =>
-            dbx.filesUpload({
-                path: `/${foldername}/${filename}`,
-                contents: content,
-                mode: { '.tag': 'overwrite' }
-            })
-        );
+
+async function saveDropbox(content, filename, foldername) {
+    const uploadArgs = {
+        path: `/${foldername}/${filename}`,
+        contents: content,
+        mode: { ".tag": "overwrite" }
+    };
+
+    try {
+        // 1st attempt: upload directly
+        return await dbx.filesUpload(uploadArgs);
+    } catch (err) {
+        // If the only failure was "folder not found", create it then retry
+        if (
+            err.error?.error?.[".tag"] === "path" &&
+            err.error.error.path[".tag"] === "not_found"
+        ) {
+            // create the folder
+            await dbx.filesCreateFolderV2({ path: `/${foldername}` });
+            // then upload again
+            return await dbx.filesUpload(uploadArgs);
+        }
+        // for any other error, rethrow so your route's .catch will handle it
+        throw err;
+    }
 }
+
+  
+// function saveDropbox(content, filename, foldername) {
+//     return dbx.filesGetMetadata({ path: `/${foldername}` })
+//         .catch(err => {
+//             // if the folder truly isn’t there, create it
+//             if (
+//                 err.error?.error?.['.tag'] === 'path' &&
+//                 err.error.error.path['.tag'] === 'not_found'
+//             ) {
+//                 return dbx.filesCreateFolder({ 
+//                     path: `/${foldername}`, 
+//                     autorename: false 
+//                 });
+//             }
+//             // otherwise re-throw for the outer catch to handle
+//             throw err;
+//         })
+//         .then(() =>
+//             dbx.filesUpload({
+//                 path: `/${foldername}/${filename}`,
+//                 contents: content,
+//                 mode: { '.tag': 'overwrite' }
+//             })
+//         );
+// }
 
 
 // // old
