@@ -44,26 +44,52 @@ const dbx = new Dropbox({
 });
 
 
-saveDropbox = function (content, filename, foldername) {
-    return dbx.filesGetMetadata({
-        path: "/" + foldername,
-    }).catch(err => {
-        // //      console.log(err['error']['path'])
-        // if (err.error.error.path['.tag'] == 'not_found') {
-        //     return dbx.filesCreateFolder({
-        //         path: "/" + foldername,
-        //         autorename: false,
-        //     });
-        // } else {
-        //     throw err;
-        // }
-    }).then(() => {
+function saveDropbox(content, filename, foldername) {
+    return dbx.filesGetMetadata({ path: `/${foldername}` })
+      .catch(err => {
+        // if it really is “folder not found”, create it
+        if (
+          err.error &&
+          err.error.error &&
+          err.error.error['.tag'] === 'path' &&
+          err.error.error.path['.tag'] === 'not_found'
+        ) {
+          return dbx.filesCreateFolder({ path: `/${foldername}` });
+        }
+        // otherwise bubble it up
+        throw err;
+      })
+      .then(() => {
         return dbx.filesUpload({
-            path: "/" + foldername + "/" + filename,
-            contents: content
+          path: `/${foldername}/${filename}`,
+          contents: content,
+          mode: { '.tag': 'overwrite' }
         });
-    });
-};
+      });
+  }
+  
+
+// // old
+// saveDropbox = function (content, filename, foldername) {
+//     return dbx.filesGetMetadata({
+//         path: "/" + foldername,
+//     }).catch(err => {
+//         // //      console.log(err['error']['path'])
+//         // if (err.error.error.path['.tag'] == 'not_found') {
+//         //     return dbx.filesCreateFolder({
+//         //         path: "/" + foldername,
+//         //         autorename: false,
+//         //     });
+//         // } else {
+//         //     throw err;
+//         // }
+//     }).then(() => {
+//         return dbx.filesUpload({
+//             path: "/" + foldername + "/" + filename,
+//             contents: content
+//         });
+//     });
+// };
 
 
 saveDropboxSingleFile = function (content, filename) {
@@ -86,28 +112,50 @@ app.use(body_parser.json({ limit: "50mb" }));
 app.get("/", function (request, response) {
     response.render("index.html");
 })
-app.post("/data", function (request, response) {
-    //convert json to csv
-    request.setTimeout(0);
-    // DATA_CSV = json2csv(request.body);
-    data = request.body;
-    id = data[0].subject;
-    // id = row[1].split(",")[Id_index];
-    id = id.replace(/'/g, "");
-    var currentdate = new Date();
-    filename = Number(currentdate) + ".json";
-    foldername = id;
-    data = JSON.stringify(data);
-    saveDropbox(data, filename, foldername).catch(err => console.log(err))
-}
-);
+
+// old
+// app.post("/data", function (request, response) {
+//     //convert json to csv
+//     request.setTimeout(0);
+//     // DATA_CSV = json2csv(request.body);
+//     data = request.body;
+//     id = data[0].subject;
+//     // id = row[1].split(",")[Id_index];
+//     id = id.replace(/'/g, "");
+//     var currentdate = new Date();
+//     filename = Number(currentdate) + ".json";
+//     foldername = id;
+//     data = JSON.stringify(data);
+//     saveDropbox(data, filename, foldername).catch(err => console.log(err))
+// }
+// );
+
+app.post("/data", function (req, res) {
+    const data    = JSON.stringify(req.body);
+    const id      = req.body[0].subject.replace(/'/g, "");
+    const filename  = `${+new Date()}.json`;
+    const foldername = id;
+  
+    saveDropbox(data, filename, foldername)
+      .then(dropboxResult => {
+        // success! let the client know
+        res.json({ success: true, path: dropboxResult.path_display });
+      })
+      .catch(err => {
+        console.error("Dropbox save error:", err);
+        res.status(500).json({
+          success: false,
+          message: err.error?.error_summary || err.message
+        });
+      });
+  });
 
 app.post("/subject-status", function (request, response) {
     subject_id = request.body.subject_id;
     status = request.body.status;
     subjects[subject_id] = status;
     saveDropboxSingleFile(JSON.stringify(subjects), `subject_status_${starttime}.json`)
-    .then(() => console.log(`subjuct status recorded: ${subject_id},${status}`))
+    .then(() => console.log(`subject status recorded: ${subject_id},${status}`))
     .catch(err => console.log(err));
     //saveDropboxSingleFile(JSON.stringify(subjects), `subject_status_${starttime}.json`);
    // console.log(`subjuct status recorded: ${subject_id},${status}`);
