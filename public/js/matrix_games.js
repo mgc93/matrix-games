@@ -122,7 +122,7 @@ function startExperiment() {
                     survey_code = makeSurveyCode('success');
                     //Your survey code is: ${makeSurveyCode('success')}. </br>
                     document.body.style.cursor = 'pointer'
-                    jsPsych.endExperiment(`<div>
+                    jsPsych.abortExperiment(`<div>
                     Thank you for your participation!</br>
                     We will send you the payment for Part 1 or Part 2 soon. </br>
                     <br></br>
@@ -1356,7 +1356,7 @@ When you are ready, press the  <b>SPACE BAR</b> to continue.
                 should_be_in_fullscreen = false;
                 survey_code = makeSurveyCode('failed_quiz_game');
                 closeFullscreen();
-                jsPsych.endExperiment(`We are sorry! Unfortunately, you have answered only ${nCorrectChoice} questions correctly.</br> 
+                jsPsych.abortExperiment(`We are sorry! Unfortunately, you have answered only ${nCorrectChoice} questions correctly.</br> 
 <br><br/>
 Please RETURN YOUR SUBMISSION by closing the survey and clicking <span style="color:cyan;">'Stop Without Completing'</span> on Prolific.<br/>
 <br><br/>
@@ -1582,7 +1582,7 @@ When you are ready, press the  <b>SPACE BAR</b> to continue.
                 should_be_in_fullscreen = false;
                 survey_code = makeSurveyCode('failed_quiz_belief');
                 closeFullscreen();
-                jsPsych.endExperiment(`We are sorry! Unfortunately, you have answered only ${nCorrectBelief} questions correctly.  </br> 
+                jsPsych.abortExperiment(`We are sorry! Unfortunately, you have answered only ${nCorrectBelief} questions correctly.  </br> 
 You will receive  ${payFailQuiz2} for making it this far. </br>
 <br><br/>
 Your completion code is <span style="color:cyan;">xxxxx</span>.<br/>
