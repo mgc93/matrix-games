@@ -217,14 +217,32 @@ function startExperiment() {
                 type: "POST",
                 url: "/data",
                 data: data,
-                contentType: "application/json"
+                contentType: "application/json",
+                dataType: "json"
             })
             .done(function () {
                 console.log("Data successfully sent to server");
             })
-            .fail(function () {
-                console.error("Error saving data to server");
-            });
+            // .fail(function () {
+            //     console.error("Error saving data to server");
+            // });
+            .fail(function(jqXHR, textStatus, errorThrown) {
+                // 1) Log full details to the console
+                console.error(
+                  "Error saving data to server:",
+                  textStatus,
+                  errorThrown,
+                  jqXHR.responseText
+                );
+                
+                // 2) Pull out the server’s JSON “error” field if it exists
+                var serverMsg = jqXHR.responseJSON && jqXHR.responseJSON.error
+                              ? jqXHR.responseJSON.error
+                              : errorThrown || jqXHR.responseText;
+                
+                // 3) Show that to the user
+                alert("Error saving data to server: " + serverMsg);
+              });
         } catch (error) {
             console.error("Error in on_finish_callback:", error);
         }
