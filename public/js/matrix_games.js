@@ -530,9 +530,30 @@ function startExperiment() {
             console.log("Belief Matrix x with RT:", shuffledGameBeliefWithRT.getGameMatrix(0, randDisplayOrderBelief, "x"));
             console.log("Belief Matrix y with RT:", shuffledGameBeliefWithRT.getGameMatrix(0, randDisplayOrderBelief, "y"));
 
+        })
+        .catch(err => {
+            console.error("Failed to load design data:", err);
+            alert("Failed to load experiment data. Please refresh the page.");
         });
 
-        
+
+    // Wait for fetch to complete before any trial that needs the data runs
+    var wait_for_data = {
+        type: jsPsychCallFunction,
+        async: true,
+        func: function(done) {
+            function check() {
+                if (shuffledGameChoiceWithoutRT !== undefined) {
+                    done();
+                } else {
+                    setTimeout(check, 100);
+                }
+            }
+            check();
+        }
+    };
+
+
     // select a random number of trials based on grouping
 
     // select unique games from the design for choice and beliefs without rt
@@ -2009,6 +2030,7 @@ Thank you for signing up!`);
 
     // Run the experiment
     jsPsych.run([
+        wait_for_data,
         preload,
         fullscreen_enter,
         experiment_overview,
