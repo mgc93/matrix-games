@@ -537,10 +537,17 @@ function startExperiment() {
         });
 
 
-    // Wait for fetch to complete before any trial that needs the data runs
+    // Wait for fetch to complete before any trial that needs the data runs.
+    // Shows a loading message to participants while data is being fetched.
     var wait_for_data = {
         type: jsPsychCallFunction,
         async: true,
+        on_load: function() {
+            jsPsych.getDisplayElement().innerHTML = `
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+                    <p style="font-size: 1.5em;">Loading experiment data, please wait...</p>
+                </div>`;
+        },
         func: function(done) {
             function check() {
                 if (shuffledGameChoiceWithoutRT !== undefined) {
