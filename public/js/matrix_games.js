@@ -546,6 +546,7 @@ function startExperiment() {
             jsPsych.getDisplayElement().innerHTML = `
                 <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
                     <p style="font-size: 1.5em;">Loading experiment data, please wait...</p>
+                    <p style="font-size: 1.2em;">This may take about a minute.</p>
                 </div>`;
         },
         func: function(done) {
