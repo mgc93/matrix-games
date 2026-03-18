@@ -40,9 +40,10 @@
 // (done) double check all relevant data is saved in the plugin
 // (done) test flow
 // adjust data for pluings to include previous and next game each time?
-// on finish callback and rest of functions back to normal after putting on heroku
+// (done) on finish callback and rest of functions back to normal after putting on heroku
 // code for preprocessing data
 // code for payment
+// check how long the dropbox access token is valid for
 
 // to ask
 // (done) write additional instructions
