@@ -1,0 +1,230 @@
+/* ── Outer split-screen container ───────────────────────────────────────── */
+.container-belief-rt-info {
+  position: absolute;
+  top: 2vh;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  width: 96vw;
+  gap: 0;
+}
+
+/* ── Panels ──────────────────────────────────────────────────────────────── */
+.panel-belief-rt-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 44vw;
+}
+
+/* ── Vertical divider ────────────────────────────────────────────────────── */
+.divider-belief-rt-info {
+  width: 2px;
+  min-height: 70vh;
+  background-color: rgba(255, 255, 255, 0.35);
+  margin: 0 2vw;
+  align-self: stretch;
+}
+
+/* ── Info text below left table ──────────────────────────────────────────── */
+.info-text-belief-rt-info {
+  text-align: center;
+  font-size: clamp(13px, 1.6vh + 0.4vw, 26px);
+  margin-top: 3%;
+  max-width: 40vw;
+}
+
+.info-text-belief-rt-info .highlight-action-belief {
+  color: red;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.info-text-belief-rt-info .highlight-rt-belief {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+/* ── Slider (right panel) ────────────────────────────────────────────────── */
+.jspsych-belief-rt-info-slider-container {
+  width: 40vw;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 3vh;
+}
+
+#display_prompt_belief_rt_info {
+  font-family: Arial, sans-serif;
+  font-size: clamp(13px, 1.6vh + 0.4vw, 24px);
+  color: white;
+  text-align: center;
+  margin-top: 2vh;
+}
+
+#jspsych-belief-rt-info-next {
+  margin-top: 2vh;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   PREVIOUS GAME TABLE  (prefix: bprev)  — dimmed borders
+   ══════════════════════════════════════════════════════════════════════════ */
+.tbprev {
+  position: relative;
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 44vw;
+  height: 45vh;
+  border: 4px solid rgba(255, 255, 255, 0.35);
+  box-sizing: border-box;
+}
+
+.tbprev td {
+  border-color: rgba(255, 255, 255, 0.35);
+  border-style: solid;
+  border-width: 1px;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  overflow: hidden;
+  padding: 10px 20px;
+  word-break: normal;
+}
+
+.tbprev .tbprev-column {
+  width: 1%;
+  border-width: 2px;
+}
+
+.tbprev .tbprev-ti2t {
+  color: rgba(50, 203, 0, 0.55);
+  text-align: center;
+  font-size: clamp(13px, 1.6vh + 0.4vw, 26px);
+  vertical-align: top;
+  border-right: 1px solid transparent;
+  border-top: 1px solid transparent;
+  padding: 4vh 2vh;
+}
+
+.tbprev .tbprev-baqh-other {
+  text-align: center;
+  vertical-align: center;
+  height: 1vh;
+  border-width: 2px;
+}
+
+.tbprev .tbprev-viqs {
+  color: rgba(254, 0, 0, 0.55);
+  text-align: center;
+  font-size: clamp(13px, 1.6vh + 0.4vw, 26px);
+  vertical-align: top;
+  border-left: 1px solid transparent;
+  border-bottom: 1px solid transparent;
+  padding: 4vh 2vh;
+}
+
+.tbprev .tbprev-0lax-other {
+  text-align: left;
+  vertical-align: top;
+}
+
+.tbprev .tbprev-0lax {
+  text-align: left;
+  vertical-align: top;
+  padding: 4vh 2vh;
+}
+
+.tbprev .tbprev-0lax-top {
+  text-align: left;
+  vertical-align: top;
+  border: 1px solid transparent;
+  padding: 4vh 2vh;
+}
+
+#bprev-action-self-top    { color: rgba(50, 203, 0, 0.55); }
+#bprev-action-self-bottom { color: rgba(50, 203, 0, 0.55); }
+#bprev-action-other-left  { color: rgba(254, 0, 0, 0.55); }
+#bprev-action-other-right { color: rgba(254, 0, 0, 0.55); }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   NEW GAME TABLE  (prefix: bnext)  — full brightness, L is blue
+   ══════════════════════════════════════════════════════════════════════════ */
+.tbnext {
+  position: relative;
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 44vw;
+  height: 45vh;
+  border: 4px solid white;
+  box-sizing: border-box;
+}
+
+.tbnext td {
+  border-color: white;
+  border-style: solid;
+  border-width: 1px;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  overflow: hidden;
+  padding: 10px 20px;
+  word-break: normal;
+}
+
+.tbnext .tbnext-column {
+  width: 1%;
+  border-width: 2px;
+}
+
+.tbnext .tbnext-ti2t {
+  color: #32cb00;
+  text-align: center;
+  font-size: clamp(13px, 1.6vh + 0.4vw, 26px);
+  vertical-align: top;
+  border-right: 1px solid transparent;
+  border-top: 1px solid transparent;
+  padding: 4vh 2vh;
+}
+
+.tbnext .tbnext-baqh-other {
+  text-align: center;
+  vertical-align: center;
+  height: 1vh;
+  border-width: 2px;
+}
+
+.tbnext .tbnext-viqs {
+  color: #fe0000;
+  text-align: center;
+  font-size: clamp(13px, 1.6vh + 0.4vw, 26px);
+  vertical-align: top;
+  border-left: 1px solid transparent;
+  border-bottom: 1px solid transparent;
+  padding: 4vh 2vh;
+}
+
+.tbnext .tbnext-0lax-other {
+  text-align: left;
+  vertical-align: top;
+}
+
+.tbnext .tbnext-0lax {
+  text-align: left;
+  vertical-align: top;
+  padding: 4vh 2vh;
+}
+
+.tbnext .tbnext-0lax-top {
+  text-align: left;
+  vertical-align: top;
+  border: 1px solid transparent;
+  padding: 4vh 2vh;
+}
+
+/* L is blue (matching existing belief plugin), R is white */
+#bnext-action-self-top    { color: #32cb00; }
+#bnext-action-self-bottom { color: #32cb00; }
+#bnext-action-other-left  { color: #0080ff; }
+#bnext-action-other-right { color: white; }

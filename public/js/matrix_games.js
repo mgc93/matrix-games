@@ -1906,11 +1906,117 @@ Thank you for signing up!`);
     var game_belief_rt = {
         timeline: [
             fixation,
+            // prev game info (left) + elicit belief for player 1 in new game (right)
+            {
+                type: jsPsychGameBeliefRTInfoTableSliderResponse,
+                // new game (right panel)
+                stimulus: () =>
+                    shuffledGameBeliefWithRT.getGameMatrix(belief_rt_player_1_count, randDisplayOrderBelief, "y"),
+                labels: ['0%', '10%', '20%', '30%', '40%', '50%', '60%', '70%', '80%', '90%', '100%'],
+                stimulus_order: () => randomOrderBeliefWithRT[belief_rt_player_1_count],
+                stimulus_display: () => randDisplayOrderBelief[belief_rt_player_1_count],
+                stimulus_r: () => shuffledGameBeliefWithRT.r_y[belief_rt_player_1_count],
+                stimulus_type_game: () => shuffledGameBeliefWithRT.type_game_y[belief_rt_player_1_count],
+                stimulus_eu: () => shuffledGameBeliefWithRT.eu_y[belief_rt_player_1_count],
+                stimulus_n_game: () => shuffledGameBeliefWithRT.n_game_y[belief_rt_player_1_count],
+                stimulus_n_game_r: () => shuffledGameBeliefWithRT.n_game_r_y[belief_rt_player_1_count],
+                player_number: 1,
+                player_action: () => shuffledGameBeliefWithRT.player_1_chosen_mapped[belief_rt_player_1_count],
+                player_rt: () => shuffledGameBeliefWithRT.rt_obs_1[belief_rt_player_1_count],
+                player_rt_q: () => shuffledGameBeliefWithRT.rt_q_1[belief_rt_player_1_count],
+                subject: () => shuffledGameBeliefWithRT.subject_1[belief_rt_player_1_count],
+                min: 0,
+                max: 100,
+                prompt: "How likely is it that the player chose action <span style='color: #0080ff; font-size: 1.2em; font-weight: bold;'>L</span>?",
+                require_movement: true,
+                start: () => getRandomInt(0, 100),
+                response_ends_trial: true,
+                // previous game (left panel)
+                prev_stimulus: () =>
+                    shuffledGameBeliefWithRT.getGameMatrix(belief_rt_player_1_count, randDisplayOrderBelief, "x"),
+                prev_stimulus_order: () => randomOrderBeliefWithRT[belief_rt_player_1_count],
+                prev_stimulus_display: () => randDisplayOrderBelief[belief_rt_player_1_count],
+                prev_stimulus_r: () => shuffledGameBeliefWithRT.r_x[belief_rt_player_1_count],
+                prev_stimulus_type_game: () => shuffledGameBeliefWithRT.type_game_x[belief_rt_player_1_count],
+                prev_stimulus_eu: () => shuffledGameBeliefWithRT.eu_x[belief_rt_player_1_count],
+                prev_stimulus_n_game: () => shuffledGameBeliefWithRT.n_game_x[belief_rt_player_1_count],
+                prev_stimulus_n_game_r: () => shuffledGameBeliefWithRT.n_game_r_x[belief_rt_player_1_count],
+                // both players (always saved)
+                player_1_action: () => shuffledGameBeliefWithRT.player_1_chosen_mapped[belief_rt_player_1_count],
+                player_2_action: () => shuffledGameBeliefWithRT.player_2_chosen_mapped[belief_rt_player_1_count],
+                player_1_rt: () => shuffledGameBeliefWithRT.rt_obs_1[belief_rt_player_1_count],
+                player_2_rt: () => shuffledGameBeliefWithRT.rt_obs_2[belief_rt_player_1_count],
+                player_1_rt_q: () => shuffledGameBeliefWithRT.rt_q_1[belief_rt_player_1_count],
+                player_2_rt_q: () => shuffledGameBeliefWithRT.rt_q_2[belief_rt_player_1_count],
+                subject_1: () => shuffledGameBeliefWithRT.subject_1[belief_rt_player_1_count],
+                subject_2: () => shuffledGameBeliefWithRT.subject_2[belief_rt_player_1_count],
+                on_finish: (data) => {
+                    belief_rt_player_1_data.push(data);
+                    belief_rt_player_1_count++;
+                    // testing
+                    console.log("Current belief_rt_player_1_data:", belief_rt_player_1_data);
+                },
+            },
+            fixation,
+            // prev game info (left) + elicit belief for player 2 in new game (right)
+            {
+                type: jsPsychGameBeliefRTInfoTableSliderResponse,
+                // new game (right panel)
+                stimulus: () =>
+                    shuffledGameBeliefWithRT.getGameMatrix(belief_rt_player_2_count, randDisplayOrderBelief, "y"),
+                labels: ['0%', '10%', '20%', '30%', '40%', '50%', '60%', '70%', '80%', '90%', '100%'],
+                stimulus_order: () => randomOrderBeliefWithRT[belief_rt_player_2_count],
+                stimulus_display: () => randDisplayOrderBelief[belief_rt_player_2_count],
+                stimulus_r: () => shuffledGameBeliefWithRT.r_y[belief_rt_player_2_count],
+                stimulus_type_game: () => shuffledGameBeliefWithRT.type_game_y[belief_rt_player_2_count],
+                stimulus_eu: () => shuffledGameBeliefWithRT.eu_y[belief_rt_player_2_count],
+                stimulus_n_game: () => shuffledGameBeliefWithRT.n_game_y[belief_rt_player_2_count],
+                stimulus_n_game_r: () => shuffledGameBeliefWithRT.n_game_r_y[belief_rt_player_2_count],
+                player_number: 2,
+                player_action: () => shuffledGameBeliefWithRT.player_2_chosen_mapped[belief_rt_player_2_count],
+                player_rt: () => shuffledGameBeliefWithRT.rt_obs_2[belief_rt_player_2_count],
+                player_rt_q: () => shuffledGameBeliefWithRT.rt_q_2[belief_rt_player_2_count],
+                subject: () => shuffledGameBeliefWithRT.subject_2[belief_rt_player_2_count],
+                min: 0,
+                max: 100,
+                prompt: "How likely is it that the player chose action <span style='color: #0080ff; font-size: 1.2em; font-weight: bold;'>L</span>?",
+                require_movement: true,
+                start: () => getRandomInt(0, 100),
+                response_ends_trial: true,
+                // previous game (left panel)
+                prev_stimulus: () =>
+                    shuffledGameBeliefWithRT.getGameMatrix(belief_rt_player_2_count, randDisplayOrderBelief, "x"),
+                prev_stimulus_order: () => randomOrderBeliefWithRT[belief_rt_player_2_count],
+                prev_stimulus_display: () => randDisplayOrderBelief[belief_rt_player_2_count],
+                prev_stimulus_r: () => shuffledGameBeliefWithRT.r_x[belief_rt_player_2_count],
+                prev_stimulus_type_game: () => shuffledGameBeliefWithRT.type_game_x[belief_rt_player_2_count],
+                prev_stimulus_eu: () => shuffledGameBeliefWithRT.eu_x[belief_rt_player_2_count],
+                prev_stimulus_n_game: () => shuffledGameBeliefWithRT.n_game_x[belief_rt_player_2_count],
+                prev_stimulus_n_game_r: () => shuffledGameBeliefWithRT.n_game_r_x[belief_rt_player_2_count],
+                // both players (always saved)
+                player_1_action: () => shuffledGameBeliefWithRT.player_1_chosen_mapped[belief_rt_player_2_count],
+                player_2_action: () => shuffledGameBeliefWithRT.player_2_chosen_mapped[belief_rt_player_2_count],
+                player_1_rt: () => shuffledGameBeliefWithRT.rt_obs_1[belief_rt_player_2_count],
+                player_2_rt: () => shuffledGameBeliefWithRT.rt_obs_2[belief_rt_player_2_count],
+                player_1_rt_q: () => shuffledGameBeliefWithRT.rt_q_1[belief_rt_player_2_count],
+                player_2_rt_q: () => shuffledGameBeliefWithRT.rt_q_2[belief_rt_player_2_count],
+                subject_1: () => shuffledGameBeliefWithRT.subject_1[belief_rt_player_2_count],
+                subject_2: () => shuffledGameBeliefWithRT.subject_2[belief_rt_player_2_count],
+                on_finish: (data) => {
+                    belief_rt_player_2_data.push(data);
+                    belief_rt_player_2_count++;
+                    // testing
+                    console.log("Current belief_rt_player_2_data:", belief_rt_player_2_data);
+                },
+            },
+
+            /* --- OLD VERSION (separate display + slider trials) ---
+            fixation,
             // show what the player 1 did in the previous game
             {
                 type: jsPsychGameBeliefPlayerRTTableDisplay,
                 stimulus: () =>
-                    shuffledGameBeliefWithRT.getGameMatrix(belief_rt_display_player_1_count, randDisplayOrderBelief, "x"), // Use updated reshuffled object
+                    shuffledGameBeliefWithRT.getGameMatrix(belief_rt_display_player_1_count, randDisplayOrderBelief, "x"),
                 choices: [" "],
                 stimulus_order: () => randomOrderBeliefWithRT[belief_rt_display_player_1_count],
                 stimulus_display: () => randDisplayOrderBelief[belief_rt_display_player_1_count],
@@ -1927,7 +2033,6 @@ Thank you for signing up!`);
                 on_finish: (data) => {
                     belief_rt_display_player_1_data.push(data);
                     belief_rt_display_player_1_count++;
-                    // testing
                     console.log("Current belief_rt_display_player_1_data:", belief_rt_display_player_1_data);
                 },
             },
@@ -1950,8 +2055,7 @@ Thank you for signing up!`);
                 player_rt: () => shuffledGameBeliefWithRT.rt_obs_1[belief_rt_player_1_count],
                 player_rt_q: () => shuffledGameBeliefWithRT.rt_q_1[belief_rt_player_1_count],
                 subject: () => shuffledGameBeliefWithRT.subject_1[belief_rt_player_1_count],
-                min: 0,
-                max: 100,
+                min: 0, max: 100,
                 prompt: "How likely is it that the player chose action <span style='color: #0080ff; font-size: 1.2em; font-weight: bold;'>L</span>?",
                 require_movement: true,
                 start: () => getRandomInt(0, 100),
@@ -1959,7 +2063,6 @@ Thank you for signing up!`);
                 on_finish: (data) => {
                     belief_rt_player_1_data.push(data);
                     belief_rt_player_1_count++;
-                    // testing
                     console.log("Current belief_rt_player_1_data:", belief_rt_player_1_data);
                 },
             },
@@ -1968,7 +2071,7 @@ Thank you for signing up!`);
             {
                 type: jsPsychGameBeliefPlayerRTTableDisplay,
                 stimulus: () =>
-                    shuffledGameBeliefWithRT.getGameMatrix(belief_rt_display_player_2_count, randDisplayOrderBelief, "x"), // Use updated reshuffled object
+                    shuffledGameBeliefWithRT.getGameMatrix(belief_rt_display_player_2_count, randDisplayOrderBelief, "x"),
                 choices: [" "],
                 stimulus_order: () => randomOrderBeliefWithRT[belief_rt_display_player_2_count],
                 stimulus_display: () => randDisplayOrderBelief[belief_rt_display_player_2_count],
@@ -1985,7 +2088,6 @@ Thank you for signing up!`);
                 on_finish: (data) => {
                     belief_rt_display_player_2_data.push(data);
                     belief_rt_display_player_2_count++;
-                    // testing
                     console.log("Current belief_rt_display_player_2_data:", belief_rt_display_player_2_data);
                 },
             },
@@ -2008,8 +2110,7 @@ Thank you for signing up!`);
                 player_rt: () => shuffledGameBeliefWithRT.rt_obs_1[belief_rt_player_2_count],
                 player_rt_q: () => shuffledGameBeliefWithRT.rt_q_1[belief_rt_player_2_count],
                 subject: () => shuffledGameBeliefWithRT.subject_1[belief_rt_player_2_count],
-                min: 0,
-                max: 100,
+                min: 0, max: 100,
                 prompt: "How likely is it that the player chose action <span style='color: #0080ff; font-size: 1.2em; font-weight: bold;'>L</span>?",
                 require_movement: true,
                 start: () => getRandomInt(0, 100),
@@ -2017,10 +2118,10 @@ Thank you for signing up!`);
                 on_finish: (data) => {
                     belief_rt_player_2_data.push(data);
                     belief_rt_player_2_count++;
-                    // testing
                     console.log("Current belief_rt_player_2_data:", belief_rt_player_2_data);
                 },
             },
+            --- END OLD VERSION --- */
         ],
         loop_function: () => belief_rt_player_1_count < 5// shuffledGameBeliefWithRT.r_y.length
     };
