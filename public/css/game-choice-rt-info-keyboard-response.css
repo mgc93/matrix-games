@@ -1,0 +1,234 @@
+/* ── Outer split-screen container ───────────────────────────────────────── */
+.container-choice-rt-info {
+  position: absolute;
+  top: 5vh;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  width: 96vw;
+  gap: 0;
+}
+
+/* ── Panels ──────────────────────────────────────────────────────────────── */
+.panel-choice-rt-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 44vw;
+}
+
+/* ── Vertical divider ────────────────────────────────────────────────────── */
+.divider-choice-rt-info {
+  width: 2px;
+  min-height: 70vh;
+  background-color: rgba(255, 255, 255, 0.35);
+  margin: 0 2vw;
+  align-self: stretch;
+}
+
+/* ── Info text below each table ──────────────────────────────────────────── */
+.info-text-choice-rt-info {
+  text-align: center;
+  font-size: clamp(13px, 1.6vh + 0.4vw, 26px);
+  margin-top: 3%;
+  max-width: 40vw;
+}
+
+.info-text-choice-rt-info .highlight-action {
+  color: red;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.info-text-choice-rt-info .highlight-rt {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   PREVIOUS GAME TABLE  (prefix: prev)  — dimmed borders
+   ══════════════════════════════════════════════════════════════════════════ */
+.tprev {
+  position: relative;
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 44vw;
+  height: 48vh;
+  border: 4px solid rgba(255, 255, 255, 0.35);
+  box-sizing: border-box;
+}
+
+.tprev td {
+  border-color: rgba(255, 255, 255, 0.35);
+  border-style: solid;
+  border-width: 1px;
+  font-family: Arial, sans-serif;
+  font-size: 30px;
+  font-weight: bold;
+  overflow: hidden;
+  padding: 10px 20px;
+  word-break: normal;
+}
+
+.tprev .tprev-column {
+  width: 1%;
+  border-width: 2px;
+}
+
+.tprev .tprev-ti2t {
+  color: rgba(50, 203, 0, 0.55);
+  text-align: center;
+  font-size: clamp(13px, 1.6vh + 0.4vw, 26px);
+  vertical-align: top;
+  border-right: 1px solid transparent;
+  border-top: 1px solid transparent;
+  padding: 4vh 2vh;
+}
+
+.tprev .tprev-baqh-other {
+  text-align: center;
+  vertical-align: center;
+  height: 1vh;
+  border-width: 2px;
+}
+
+.tprev .tprev-viqs {
+  color: rgba(254, 0, 0, 0.55);
+  text-align: center;
+  font-size: clamp(13px, 1.6vh + 0.4vw, 26px);
+  vertical-align: top;
+  border-left: 1px solid transparent;
+  border-bottom: 1px solid transparent;
+  padding: 4vh 2vh;
+}
+
+.tprev .tprev-0lax-other {
+  text-align: left;
+  vertical-align: top;
+}
+
+.tprev .tprev-0lax {
+  text-align: left;
+  vertical-align: top;
+  padding: 4vh 2vh;
+}
+
+.tprev .tprev-0lax-top {
+  text-align: left;
+  vertical-align: top;
+  border: 1px solid transparent;
+  padding: 4vh 2vh;
+}
+
+#prev-action-self-top    { color: rgba(50, 203, 0, 0.55); }
+#prev-action-self-bottom { color: rgba(50, 203, 0, 0.55); }
+#prev-action-other-left  { color: rgba(254, 0, 0, 0.55); }
+#prev-action-other-right { color: rgba(254, 0, 0, 0.55); }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   NEW GAME TABLE  (prefix: next)  — full brightness
+   ══════════════════════════════════════════════════════════════════════════ */
+.tnext {
+  position: relative;
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 44vw;
+  height: 48vh;
+  border: 4px solid white;
+  box-sizing: border-box;
+}
+
+.tnext td {
+  border-color: white;
+  border-style: solid;
+  border-width: 1px;
+  font-family: Arial, sans-serif;
+  font-size: 30px;
+  font-weight: bold;
+  overflow: hidden;
+  padding: 10px 20px;
+  word-break: normal;
+}
+
+.tnext .tnext-column {
+  width: 1%;
+  border-width: 2px;
+}
+
+.tnext .tnext-ti2t {
+  color: #32cb00;
+  text-align: center;
+  font-size: clamp(13px, 1.6vh + 0.4vw, 26px);
+  vertical-align: top;
+  border-right: 1px solid transparent;
+  border-top: 1px solid transparent;
+  padding: 4vh 2vh;
+}
+
+.tnext .tnext-baqh-other {
+  text-align: center;
+  vertical-align: center;
+  height: 1vh;
+  border-width: 2px;
+}
+
+.tnext .tnext-viqs {
+  color: #fe0000;
+  text-align: center;
+  font-size: clamp(13px, 1.6vh + 0.4vw, 26px);
+  vertical-align: top;
+  border-left: 1px solid transparent;
+  border-bottom: 1px solid transparent;
+  padding: 4vh 2vh;
+}
+
+.tnext .tnext-0lax-other {
+  text-align: left;
+  vertical-align: top;
+}
+
+.tnext .tnext-0lax {
+  text-align: left;
+  vertical-align: top;
+  padding: 4vh 2vh;
+}
+
+.tnext .tnext-0lax-top {
+  text-align: left;
+  vertical-align: top;
+  border: 1px solid transparent;
+  padding: 4vh 2vh;
+}
+
+#next-action-self-top    { color: #32cb00; }
+#next-action-self-bottom { color: #32cb00; }
+#next-action-other-left  { color: #fe0000; }
+#next-action-other-right { color: #fe0000; }
+
+/* Row highlight on response (right panel only) */
+#new-game-panel .row-1-responded {
+  border-top: 7px solid white;
+  border-left: 7px solid white;
+  border-right: 7px solid white;
+}
+
+#new-game-panel .row-2-responded {
+  border-bottom: 7px solid white;
+  border-left: 7px solid white;
+  border-right: 7px solid white;
+}
+
+#new-game-panel .row-3-responded {
+  border-top: 7px solid white;
+  border-left: 7px solid white;
+  border-right: 7px solid white;
+}
+
+#new-game-panel .row-4-responded {
+  border-bottom: 7px solid white;
+  border-left: 7px solid white;
+  border-right: 7px solid white;
+}

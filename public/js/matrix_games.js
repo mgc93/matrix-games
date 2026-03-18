@@ -1675,6 +1675,100 @@ Thank you for signing up!`);
             fixation,
             // action for player 1 in the next game
             {
+                type: jsPsychGameChoiceRTInfoKeyboardResponse,
+                // new game (right panel)
+                stimulus: () =>
+                    shuffledGameChoiceWithRT.getGameMatrix(choice_rt_player_1_count, randDisplayOrderChoice, "y"),
+                choices: ["ArrowUp", "ArrowDown"],
+                stimulus_order: () => randomOrderChoiceWithRT[choice_rt_player_1_count],
+                stimulus_display: () => randDisplayOrderChoice[choice_rt_player_1_count],
+                stimulus_r: () => shuffledGameChoiceWithRT.r_y[choice_rt_player_1_count],
+                stimulus_type_game: () => shuffledGameChoiceWithRT.type_game_y[choice_rt_player_1_count],
+                stimulus_eu: () => shuffledGameChoiceWithRT.eu_y[choice_rt_player_1_count],
+                stimulus_n_game: () => shuffledGameChoiceWithRT.n_game_y[choice_rt_player_1_count],
+                stimulus_n_game_r: () => shuffledGameChoiceWithRT.n_game_r_y[choice_rt_player_1_count],
+                player_number: 1,
+                player_action: () => shuffledGameChoiceWithRT.player_1_chosen_mapped[choice_rt_player_1_count],
+                player_rt: () => shuffledGameChoiceWithRT.rt_obs_1[choice_rt_player_1_count],
+                player_rt_q: () => shuffledGameChoiceWithRT.rt_q_1[choice_rt_player_1_count],
+                subject: () => shuffledGameChoiceWithRT.subject_1[choice_rt_player_1_count],
+                // previous game (left panel)
+                prev_stimulus: () =>
+                    shuffledGameChoiceWithRT.getGameMatrix(choice_rt_player_1_count, randDisplayOrderChoice, "x"),
+                prev_stimulus_order: () => randomOrderChoiceWithRT[choice_rt_player_1_count],
+                prev_stimulus_display: () => randDisplayOrderChoice[choice_rt_player_1_count],
+                prev_stimulus_r: () => shuffledGameChoiceWithRT.r_x[choice_rt_player_1_count],
+                prev_stimulus_type_game: () => shuffledGameChoiceWithRT.type_game_x[choice_rt_player_1_count],
+                prev_stimulus_eu: () => shuffledGameChoiceWithRT.eu_x[choice_rt_player_1_count],
+                prev_stimulus_n_game: () => shuffledGameChoiceWithRT.n_game_x[choice_rt_player_1_count],
+                prev_stimulus_n_game_r: () => shuffledGameChoiceWithRT.n_game_r_x[choice_rt_player_1_count],
+                // both players (always saved)
+                player_1_action: () => shuffledGameChoiceWithRT.player_1_chosen_mapped[choice_rt_player_1_count],
+                player_2_action: () => shuffledGameChoiceWithRT.player_2_chosen_mapped[choice_rt_player_1_count],
+                player_1_rt: () => shuffledGameChoiceWithRT.rt_obs_1[choice_rt_player_1_count],
+                player_2_rt: () => shuffledGameChoiceWithRT.rt_obs_2[choice_rt_player_1_count],
+                player_1_rt_q: () => shuffledGameChoiceWithRT.rt_q_1[choice_rt_player_1_count],
+                player_2_rt_q: () => shuffledGameChoiceWithRT.rt_q_2[choice_rt_player_1_count],
+                subject_1: () => shuffledGameChoiceWithRT.subject_1[choice_rt_player_1_count],
+                subject_2: () => shuffledGameChoiceWithRT.subject_2[choice_rt_player_1_count],
+                on_finish: (data) => {
+                    choice_rt_player_1_data.push(data);
+                    choice_rt_player_1_count++;
+                    // testing
+                    console.log("Current choice_rt_data player 1:", choice_rt_player_1_data);
+                },
+            },
+            fixation,
+            // action for player 2 in the next game
+            {
+                type: jsPsychGameChoiceRTInfoKeyboardResponse,
+                // new game (right panel)
+                stimulus: () =>
+                    shuffledGameChoiceWithRT.getGameMatrix(choice_rt_player_2_count, randDisplayOrderChoice, "y"),
+                choices: ["ArrowUp", "ArrowDown"],
+                stimulus_order: () => randomOrderChoiceWithRT[choice_rt_player_2_count],
+                stimulus_display: () => randDisplayOrderChoice[choice_rt_player_2_count],
+                stimulus_r: () => shuffledGameChoiceWithRT.r_y[choice_rt_player_2_count],
+                stimulus_type_game: () => shuffledGameChoiceWithRT.type_game_y[choice_rt_player_2_count],
+                stimulus_eu: () => shuffledGameChoiceWithRT.eu_y[choice_rt_player_2_count],
+                stimulus_n_game: () => shuffledGameChoiceWithRT.n_game_y[choice_rt_player_2_count],
+                stimulus_n_game_r: () => shuffledGameChoiceWithRT.n_game_r_y[choice_rt_player_2_count],
+                player_number: 2,
+                player_action: () => shuffledGameChoiceWithRT.player_2_chosen_mapped[choice_rt_player_2_count],
+                player_rt: () => shuffledGameChoiceWithRT.rt_obs_2[choice_rt_player_2_count],
+                player_rt_q: () => shuffledGameChoiceWithRT.rt_q_2[choice_rt_player_2_count],
+                subject: () => shuffledGameChoiceWithRT.subject_2[choice_rt_player_2_count],
+                // previous game (left panel)
+                prev_stimulus: () =>
+                    shuffledGameChoiceWithRT.getGameMatrix(choice_rt_player_2_count, randDisplayOrderChoice, "x"),
+                prev_stimulus_order: () => randomOrderChoiceWithRT[choice_rt_player_2_count],
+                prev_stimulus_display: () => randDisplayOrderChoice[choice_rt_player_2_count],
+                prev_stimulus_r: () => shuffledGameChoiceWithRT.r_x[choice_rt_player_2_count],
+                prev_stimulus_type_game: () => shuffledGameChoiceWithRT.type_game_x[choice_rt_player_2_count],
+                prev_stimulus_eu: () => shuffledGameChoiceWithRT.eu_x[choice_rt_player_2_count],
+                prev_stimulus_n_game: () => shuffledGameChoiceWithRT.n_game_x[choice_rt_player_2_count],
+                prev_stimulus_n_game_r: () => shuffledGameChoiceWithRT.n_game_r_x[choice_rt_player_2_count],
+                // both players (always saved)
+                player_1_action: () => shuffledGameChoiceWithRT.player_1_chosen_mapped[choice_rt_player_2_count],
+                player_2_action: () => shuffledGameChoiceWithRT.player_2_chosen_mapped[choice_rt_player_2_count],
+                player_1_rt: () => shuffledGameChoiceWithRT.rt_obs_1[choice_rt_player_2_count],
+                player_2_rt: () => shuffledGameChoiceWithRT.rt_obs_2[choice_rt_player_2_count],
+                player_1_rt_q: () => shuffledGameChoiceWithRT.rt_q_1[choice_rt_player_2_count],
+                player_2_rt_q: () => shuffledGameChoiceWithRT.rt_q_2[choice_rt_player_2_count],
+                subject_1: () => shuffledGameChoiceWithRT.subject_1[choice_rt_player_2_count],
+                subject_2: () => shuffledGameChoiceWithRT.subject_2[choice_rt_player_2_count],
+                on_finish: (data) => {
+                    choice_rt_player_2_data.push(data);
+                    choice_rt_player_2_count++;
+                    // testing
+                    console.log("Current choice_rt_data player 2:", choice_rt_player_2_data);
+                },
+            }
+
+            /* --- OLD VERSION (jsPsychGameChoiceRTKeyboardResponse) ---
+            fixation,
+            // action for player 1 in the next game
+            {
                 type: jsPsychGameChoiceRTKeyboardResponse,
                 stimulus: () =>
                     shuffledGameChoiceWithRT.getGameMatrix(choice_rt_player_1_count, randDisplayOrderChoice, "y"),
@@ -1694,7 +1788,6 @@ Thank you for signing up!`);
                 on_finish: (data) => {
                     choice_rt_player_1_data.push(data);
                     choice_rt_player_1_count++;
-                    // testing
                     console.log("Current choice_rt_data player 1:", choice_rt_player_1_data);
                 },
             },
@@ -1720,10 +1813,10 @@ Thank you for signing up!`);
                 on_finish: (data) => {
                     choice_rt_player_2_data.push(data);
                     choice_rt_player_2_count++;
-                    // testing
                     console.log("Current choice_rt_data player 2:", choice_rt_player_2_data);
                 },
             }
+            --- END OLD VERSION --- */
         ],
         loop_function: () => choice_player_count < 5 //shuffledGameChoiceWithRT.r_y.length
     };
@@ -1919,19 +2012,19 @@ Thank you for signing up!`);
         preload,
         fullscreen_enter,
         experiment_overview,
-        choice_instructions,
-        control_question_choice_1,
-        control_question_choice_1_response,
-        control_question_choice_2,
-        control_question_choice_2_response,
-        control_question_choice_3,
-        control_question_choice_3_response,
-        control_question_choice_4,
-        control_question_choice_4_response,
-        control_question_choice_5,
-        control_question_choice_5_response,
-        control_question_choice_6,
-        control_question_choice_6_response,
+//          choice_instructions,
+//         control_question_choice_1,
+//         control_question_choice_1_response,
+//         control_question_choice_2,
+//         control_question_choice_2_response,
+//         control_question_choice_3,
+//         control_question_choice_3_response,
+//         control_question_choice_4,
+//         control_question_choice_4_response,
+//         control_question_choice_5,
+//         control_question_choice_5_response,
+//         control_question_choice_6,
+//         control_question_choice_6_response, 
         choice_overview,
         game_choice,
         choice_rt_instructions,
