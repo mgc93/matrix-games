@@ -132,6 +132,11 @@ var jsPsychGameChoicePlayerHTMLButtonResponse = (function (jsPsych) {
         type: jsPsych.ParameterType.INT,
         default: null,
         description: "Subject number for Player 2.",
+      },
+      median_rt_game: {
+        type: jsPsych.ParameterType.FLOAT,
+        default: null,
+        description: "Median RT (in seconds) of previous participants for this game."
       }
     },
     data: {
@@ -184,6 +189,10 @@ var jsPsychGameChoicePlayerHTMLButtonResponse = (function (jsPsych) {
         type: jsPsych.ParameterType.INT,
         default: null,
         description: "Subject number for Player 2.",
+      },
+      median_rt_game: {
+        type: jsPsych.ParameterType.FLOAT,
+        description: "Median RT (in seconds) of previous participants for this game."
       }
     }
   };
@@ -238,6 +247,7 @@ var jsPsychGameChoicePlayerHTMLButtonResponse = (function (jsPsych) {
         // add player info right after the table
         new_html += `
         <div id="player-info">
+          <p>Half of previous participants made their decision in this game within <span style="font-size: 1.2em; font-weight: bold;">${trial.median_rt_game.toFixed(1)}</span> seconds.</p>
           <p>Player 1 answered action <span style="color: red; font-size: 1.2em; font-weight: bold;">${trial.player_1_action}</span> in <span style="font-size: 1.2em; font-weight: bold;">${trial.player_1_rt.toFixed(1)}</span> seconds.</p>
           <p>Player 2 answered action <span style="color: red; font-size: 1.2em; font-weight: bold;">${trial.player_2_action}</span> in <span style="font-size: 1.2em; font-weight: bold;">${trial.player_2_rt.toFixed(1)}</span> seconds.</p>
           <p>Which player do you want to play with next?</p>
@@ -306,6 +316,7 @@ var jsPsychGameChoicePlayerHTMLButtonResponse = (function (jsPsych) {
           player_2_rt: trial.player_2_rt,
           subject_1: trial.subject_1,
           subject_2: trial.subject_2,
+          median_rt_game: trial.median_rt_game,
         };
         this.jsPsych.finishTrial(trialData);
       };

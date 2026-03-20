@@ -1,0 +1,215 @@
+---
+title: "Matrix Game Experiment — Codebook"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    theme: flatly
+    highlight: tango
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# Overview
+
+This codebook describes the data structure and variables of the **Matrix Game** experiment, a jsPsych v8.1.0 web experiment examining strategic decision-making under social information.
+
+Participants play through four parts:
+
+1. **Part 1 — Choice without RT**: choose an action in a game without seeing any other player's behaviour.
+2. **Part 1 Additional — RT-informed choice**: see a previous player's action and reaction time, then make your own choice.
+3. **Part 2 — Belief without RT**: estimate the probability that a random player chose action L, without player information.
+4. **Part 2 Additional — RT-informed belief**: estimate that probability after seeing a specific player's action and RT.
+
+Data are saved as JSON arrays to Dropbox every 10 trials and at experiment end. Each file is named `{timestamp}.json` and stored in a folder named by subject ID.
+
+---
+
+# Experimental Design
+
+## Game Selection
+
+At runtime, **24 game-pairs (x, y)** are sampled from the design file (`design_data_play_comb_pred.csv`):
+
+- **6 pairs per game type × 4 game types = 24 total**
+- Within each game type: 3 pairs where real players chose **Top** in game x, and 3 where they chose **Bottom** (balanced sampling)
+- Game **x** = the "previous game" actually played by real participants (shown in the left panel)
+- Game **y** = the "new game" the current participant must evaluate (shown in the right panel / as the main stimulus)
+
+## Trial Shuffling
+
+The 24 game-pairs are **independently reshuffled** for each of the 4 experiment parts. Every participant sees the same 24 pairs in all parts but in different random orders. The position in the shuffled sequence is recorded in `game_number` (0–23).
+
+## Display Orientation
+
+A single **display orientation code** (0–3) is drawn once per participant and applied uniformly to all 24 games across all 4 parts. This determines:
+
+- Whether the Top/Bottom action maps to rows (standard) or columns on screen
+- Which payoff column appears first
+
+Player actions (`player_action`, `player_1_action`, `player_2_action`) are pre-translated to L/R to match the actual on-screen display.
+
+## RT Quantile Pairing
+
+For each game-pair (x, y), **two players** are drawn from the original RT dataset:
+
+- **Player 1** always has a lower RT quantile than Player 2 (Player 1 is faster)
+- RT quantile levels: **10th, 25th, 50th, 75th, 90th** percentile (10 = fastest, 90 = slowest)
+
+## Quiz Gates
+
+Participants who fail a comprehension quiz are excluded and redirected to a failure completion code. Data up to that point is retained.
+
+- **Choice quiz**: must answer ≥ 4/6 questions correctly
+- **Belief quiz**: must answer ≥ 2/3 questions correctly
+
+## Fixation Crosses
+
+Each game trial is preceded by a fixation cross with a **random duration of 500–1500 ms** (uniform distribution), with the cursor hidden.
+
+---
+
+# Trial Types
+
+| `trial_type` value | Part | Description |
+|---|---|---|
+| `html-keyboard-response` | All | Fixation cross, instructions screens, break screen |
+| `preload` | Pre-experiment | Asset preloading |
+| `fullscreen` | Pre-experiment | Enter fullscreen prompt |
+| `survey-multi-choice` | Pre-experiment | Comprehension quiz questions |
+| `call-function` | Pre/Post | Data loading wait, success guard |
+| `game-choice-keyboard-response` | Part 1 | Choice trial — no player info |
+| `game-choice-player-html-button-response` | Part 1 Additional | Select which player to observe |
+| `game-choice-rt-info-keyboard-response` | Part 1 Additional | Choice trial — with player RT info |
+| `game-belief-table-slider-response` | Part 2 | Belief trial — no player info |
+| `game-belief-rt-info-table-slider-response` | Part 2 Additional | Belief trial — with player RT info |
+
+---
+
+# Variables
+
+## Session / Participant Variables
+
+These variables are present on **every trial** and are set via `jsPsych.data.addProperties()`.
+
+| Variable | Type | Description |
+|---|---|---|
+| `subject` | string | 7-character random alphanumeric participant ID generated at experiment start. Sourced from the Prolific `PROLIFIC_PID` URL parameter if available, otherwise randomly generated. |
+| `trial_type` | string | Name of the jsPsych plugin used for this trial. |
+| `trial_index` | integer | Sequential 0-based trial counter across the full experiment. |
+| `time_elapsed` | integer | Milliseconds since experiment start at the time this trial ended. |
+| `plugin_version` | string | Version string of the jsPsych plugin. |
+| `browser_name` | string | Browser name (e.g., `"Chrome"`). |
+| `browser_type` | string | Browser version number. |
+| `pass_quiz_1` | 0 / 1 | `1` if participant passed the choice comprehension quiz (≥ 4/6 correct); `0` if they failed and were excluded. |
+| `pass_quiz_2` | 0 / 1 | `1` if participant passed the belief comprehension quiz (≥ 2/3 correct); `0` if they failed and were excluded. |
+| `interaction` | JSON string | Array of browser interaction events (fullscreen enter/exit, focus, blur) with timestamps. |
+| `windowWidth` | integer | Screen width in pixels at experiment start. |
+| `windowHight` | integer | Screen height in pixels at experiment start. **Note: this variable name contains a typo (should be `windowHeight`).** |
+
+---
+
+## Game Matrix Variables
+
+These variables appear on all **custom game plugin trials**. Variables **without** a `prev_` prefix refer to the current (new) game **y** shown to the participant. Variables **with** a `prev_` prefix refer to the previous game **x** shown in the left panel on split-screen trials.
+
+### Current Game (y)
+
+| Variable | Type | Description |
+|---|---|---|
+| `stimulus` | array[8] | Payoff values of the game matrix in display order: `[self_TL, other_TL, self_TR, other_TR, self_BL, other_BL, self_BR, other_BR]`. T = Top row, B = Bottom row, L = Left column, R = Right column. Self payoffs displayed in green; other payoffs in red. |
+| `top_stimulus` | array[4] | First 4 elements of `stimulus`: Top row payoffs `[TL_self, TL_other, TR_self, TR_other]`. |
+| `bottom_stimulus` | array[4] | Last 4 elements of `stimulus`: Bottom row payoffs `[BL_self, BL_other, BR_self, BR_other]`. |
+| `game_number` | integer | Position of this game in the shuffled presentation order for this participant and part (0–23). |
+| `display_order` | integer | Display orientation code (0–3). Drawn once per participant; applied uniformly to all games in all parts. |
+| `game_r` | float | Riskiness parameter of the game. Positive = risk-dominant action is payoff-efficient; negative = inefficient. |
+| `game_type` | integer | Strategic game family (1–4). |
+| `game_eu` | float | Expected utility of the efficient (payoff-dominant) action, assuming the opponent chooses each action with equal probability. |
+| `n_game` | integer | Original game index in the full design space (1–72 across all 4 game types). |
+| `n_game_r` | integer | Game number within its riskiness level. |
+
+### Previous Game (x)
+
+| Variable | Type | Description |
+|---|---|---|
+| `prev_stimulus` | array[8] | Payoff values of the previous game x, in same format as `stimulus`. |
+| `prev_top_stimulus` | array[4] | Top row of the previous game. |
+| `prev_bottom_stimulus` | array[4] | Bottom row of the previous game. |
+| `prev_game_number` | integer | Shuffled presentation index of the previous game (0–23). |
+| `prev_display_order` | integer | Display orientation code of the previous game. |
+| `prev_game_r` | float | Riskiness parameter of the previous game. |
+| `prev_game_type` | integer | Strategic type of the previous game (1–4). |
+| `prev_game_eu` | float | Expected utility of the efficient action in the previous game. |
+| `prev_n_game` | integer | Original game index of the previous game (1–72). |
+| `prev_n_game_r` | integer | Within-riskiness-level number of the previous game. |
+
+---
+
+## Response Variables
+
+### Part 1 — Choice without RT (`game-choice-keyboard-response`)
+### Part 1 Additional — RT-informed choice (`game-choice-rt-info-keyboard-response`)
+
+| Variable | Type | Description |
+|---|---|---|
+| `rt` | float | Reaction time in milliseconds from stimulus onset to key press. |
+| `key_press` | string | Key pressed: `"ArrowUp"` = chose Top row; `"ArrowDown"` = chose Bottom row. |
+| `timeout` | boolean | `true` if the trial ended due to the time limit rather than a participant response; `false` if the participant responded in time. |
+
+### Part 1 Additional — Player selection (`game-choice-player-html-button-response`)
+
+| Variable | Type | Description |
+|---|---|---|
+| `rt` | float | Reaction time in milliseconds from button appearance to click. |
+| `response` | integer | Button index: `0` = Player 1 selected; `1` = Player 2 selected. |
+| `selected_player` | string | `"Player 1"` or `"Player 2"`. |
+
+### Part 2 — Belief without RT (`game-belief-table-slider-response`)
+### Part 2 Additional — RT-informed belief (`game-belief-rt-info-table-slider-response`)
+
+| Variable | Type | Description |
+|---|---|---|
+| `rt` | float | Reaction time in milliseconds from slider appearance to Continue button click. |
+| `rating` | string | Slider position 0–100, representing the estimated probability (%) that the target player chose action L. **Stored as a string; convert to integer before analysis** (e.g., `as.integer(rating)`). |
+
+---
+
+## Player Information Variables
+
+Present on **Part 1 Additional** (`game-choice-rt-info-keyboard-response`, `game-choice-player-html-button-response`) and **Part 2 Additional** (`game-belief-rt-info-table-slider-response`) trials.
+
+### Shown Player (trial-level)
+
+| Variable | Type | Description |
+|---|---|---|
+| `player_number` | integer | Which player is shown in this specific trial: `1` = faster player; `2` = slower player. |
+| `player_action` | string | Action taken by the shown player in the previous game x: `"L"` (left column) or `"R"` (right column). Already translated from T/B to L/R based on `display_order`. |
+| `player_rt` | float | Reaction time of the shown player in game x, in **seconds**. |
+| `player_rt_q` | integer | RT quantile of the shown player: one of `{10, 25, 50, 75, 90}`. 10 = fastest 10th percentile; 90 = slowest. |
+
+### Both Players (game-pair-level)
+
+| Variable | Type | Description |
+|---|---|---|
+| `player_1_action` | string | Action taken by Player 1 in the previous game x: `"L"` or `"R"`. |
+| `player_2_action` | string | Action taken by Player 2 in the previous game x: `"L"` or `"R"`. |
+| `player_1_rt` | float | Reaction time of Player 1 in game x, in seconds. |
+| `player_2_rt` | float | Reaction time of Player 2 in game x, in seconds. |
+| `player_1_rt_q` | integer | RT quantile of Player 1: one of `{10, 25, 50, 75, 90}`. Always ≤ `player_2_rt_q`. |
+| `player_2_rt_q` | integer | RT quantile of Player 2: one of `{10, 25, 50, 75, 90}`. Always ≥ `player_1_rt_q`. |
+| `subject_1` | integer | Anonymized subject ID of Player 1 from the original RT dataset. |
+| `subject_2` | integer | Anonymized subject ID of Player 2 from the original RT dataset. |
+
+---
+
+# Notes for Analysis
+
+- **`rating` type**: The belief slider response is stored as a **string** (e.g., `"90"`). Convert before any numeric operations: `as.integer(data$rating)`.
+- **`windowHight` typo**: The variable name is misspelled in the experiment code. Use `windowHight` (not `windowHeight`) when referencing screen height.
+- **RT units**: `rt` (reaction time) is in **milliseconds** throughout, except `player_rt`, `player_1_rt`, and `player_2_rt` which are in **seconds** (sourced from the original RT dataset).
+- **Data files**: Each participant's data is split across multiple JSON files (one per 10-trial batch). Files must be concatenated before analysis. Each file is a JSON array of trial objects; all session variables are repeated on every trial.
+- **Prolific**: The `subject` field contains the Prolific participant ID when the experiment is launched via a Prolific study URL (with `?PROLIFIC_PID=...`). In lab or simulation runs it contains a randomly generated 7-character string.

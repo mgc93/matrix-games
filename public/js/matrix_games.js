@@ -286,7 +286,8 @@ function startExperiment() {
             a_y, b_y, c_y, d_y,
             rt_q_1, rt_q_2, rt_obs_1, rt_obs_2,
             subject_1, subject_2,
-            player_1_chosen, player_2_chosen
+            player_1_chosen, player_2_chosen,
+            median_rt_game_x
         }) {
             // Payoffs
             this.payoff_x = [a_x, a_x, c_x, b_x, b_x, c_x, d_x, d_x]; //payoff_x;
@@ -319,6 +320,9 @@ function startExperiment() {
             this.subject_2 = subject_2;
             this.player_1_chosen = player_1_chosen;
             this.player_2_chosen = player_2_chosen;
+
+            // Median RT for previous game
+            this.median_rt_game_x = median_rt_game_x;
         }
     
         // Reshuffle all arrays in the same random order
@@ -355,7 +359,8 @@ function startExperiment() {
                 subject_1: shuffleArray(this.subject_1),
                 subject_2: shuffleArray(this.subject_2),
                 player_1_chosen: shuffleArray(this.player_1_chosen),
-                player_2_chosen: shuffleArray(this.player_2_chosen)
+                player_2_chosen: shuffleArray(this.player_2_chosen),
+                median_rt_game_x: shuffleArray(this.median_rt_game_x)
             });
         
             reshuffledGame.shuffle_order = shuffledIndices; // Save it!
@@ -473,7 +478,8 @@ function startExperiment() {
                 subject_1: get('subject_number_1'),
                 subject_2: get('subject_number_2'),
                 player_1_chosen: get('player_1_chosen'),
-                player_2_chosen: get('player_2_chosen')
+                player_2_chosen: get('player_2_chosen'),
+                median_rt_game_x: get('median_rt_game')
             });
 
             // Now initialize reshuffled game instances
@@ -1653,7 +1659,7 @@ Thank you for signing up!`);
                 },
             },
         ],
-        loop_function: () => choice_count < shuffledGameChoiceWithoutRT.r_y.length
+        loop_function: () => choice_count < 2 //shuffledGameChoiceWithoutRT.r_y.length
     };
 
 
@@ -1693,6 +1699,7 @@ Thank you for signing up!`);
                 player_2_rt: () => shuffledGameChoiceWithRT.rt_obs_2[choice_player_count],
                 subject_1: () => shuffledGameChoiceWithRT.subject_1[choice_player_count],
                 subject_2: () => shuffledGameChoiceWithRT.subject_2[choice_player_count],
+                median_rt_game: () => shuffledGameChoiceWithRT.median_rt_game_x[choice_player_count],
                 prompt: "Which player do you choose to play with next?",
                 response_ends_trial: true,
                 on_finish: (data) => {
@@ -1741,6 +1748,7 @@ Thank you for signing up!`);
                 player_2_rt_q: () => shuffledGameChoiceWithRT.rt_q_2[choice_rt_player_1_count],
                 subject_1: () => shuffledGameChoiceWithRT.subject_1[choice_rt_player_1_count],
                 subject_2: () => shuffledGameChoiceWithRT.subject_2[choice_rt_player_1_count],
+                prev_median_rt_game: () => shuffledGameChoiceWithRT.median_rt_game_x[choice_rt_player_1_count],
                 on_finish: (data) => {
                     choice_rt_player_1_data.push(data);
                     choice_rt_player_1_count++;
@@ -1787,6 +1795,7 @@ Thank you for signing up!`);
                 player_2_rt_q: () => shuffledGameChoiceWithRT.rt_q_2[choice_rt_player_2_count],
                 subject_1: () => shuffledGameChoiceWithRT.subject_1[choice_rt_player_2_count],
                 subject_2: () => shuffledGameChoiceWithRT.subject_2[choice_rt_player_2_count],
+                prev_median_rt_game: () => shuffledGameChoiceWithRT.median_rt_game_x[choice_rt_player_2_count],
                 on_finish: (data) => {
                     choice_rt_player_2_data.push(data);
                     choice_rt_player_2_count++;
@@ -1848,7 +1857,7 @@ Thank you for signing up!`);
             }
             --- END OLD VERSION --- */
         ],
-        loop_function: () => choice_player_count < shuffledGameChoiceWithRT.r_y.length
+        loop_function: () => choice_player_count < 2 //shuffledGameChoiceWithRT.r_y.length
     };
 
 
@@ -1885,7 +1894,7 @@ Thank you for signing up!`);
                 },
             },
         ],
-        loop_function: () => belief_count < shuffledGameBeliefWithoutRT.r_y.length
+        loop_function: () => belief_count < 2 //shuffledGameBeliefWithoutRT.r_y.length
     };
 
 
@@ -1951,6 +1960,7 @@ Thank you for signing up!`);
                 player_2_rt_q: () => shuffledGameBeliefWithRT.rt_q_2[belief_rt_player_1_count],
                 subject_1: () => shuffledGameBeliefWithRT.subject_1[belief_rt_player_1_count],
                 subject_2: () => shuffledGameBeliefWithRT.subject_2[belief_rt_player_1_count],
+                prev_median_rt_game: () => shuffledGameBeliefWithRT.median_rt_game_x[belief_rt_player_1_count],
                 on_finish: (data) => {
                     belief_rt_player_1_data.push(data);
                     belief_rt_player_1_count++;
@@ -2003,6 +2013,7 @@ Thank you for signing up!`);
                 player_2_rt_q: () => shuffledGameBeliefWithRT.rt_q_2[belief_rt_player_2_count],
                 subject_1: () => shuffledGameBeliefWithRT.subject_1[belief_rt_player_2_count],
                 subject_2: () => shuffledGameBeliefWithRT.subject_2[belief_rt_player_2_count],
+                prev_median_rt_game: () => shuffledGameBeliefWithRT.median_rt_game_x[belief_rt_player_2_count],
                 on_finish: (data) => {
                     belief_rt_player_2_data.push(data);
                     belief_rt_player_2_count++;
@@ -2124,7 +2135,7 @@ Thank you for signing up!`);
             },
             --- END OLD VERSION --- */
         ],
-        loop_function: () => belief_rt_player_1_count < shuffledGameBeliefWithRT.r_y.length
+        loop_function: () => belief_rt_player_1_count < 2 //shuffledGameBeliefWithRT.r_y.length
     };
 
 

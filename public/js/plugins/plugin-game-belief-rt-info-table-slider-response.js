@@ -213,6 +213,11 @@ var jsPsychGameBeliefRTInfoTableSliderResponse = (function (jsPsych) {
         type: jsPsych.ParameterType.FLOAT,
         default: null,
         description: "Subject ID for Player 2."
+      },
+      prev_median_rt_game: {
+        type: jsPsych.ParameterType.FLOAT,
+        default: null,
+        description: "Median RT (in seconds) of previous participants for the previous game."
       }
     },
     data: {
@@ -285,6 +290,9 @@ var jsPsychGameBeliefRTInfoTableSliderResponse = (function (jsPsych) {
       // --- Left panel: previous game (read-only) ---
       html += '<div class="panel-belief-rt-info panel-belief-prev">';
       html += buildTable(trial.prev_stimulus, "bprev");
+      html += `<div class="info-text-belief-rt-info">
+        Half of previous participants made their decision in this game within <span class="highlight-rt-belief">${trial.prev_median_rt_game.toFixed(1)}</span> seconds.
+      </div>`;
       html += `<div class="info-text-belief-rt-info">
         Player answered action <span class="highlight-action-belief">${trial.player_action}</span> in <span class="highlight-rt-belief">${trial.player_rt.toFixed(1)}</span> seconds.
       </div>`;
@@ -386,7 +394,8 @@ var jsPsychGameBeliefRTInfoTableSliderResponse = (function (jsPsych) {
           player_1_rt_q: trial.player_1_rt_q,
           player_2_rt_q: trial.player_2_rt_q,
           subject_1: trial.subject_1,
-          subject_2: trial.subject_2
+          subject_2: trial.subject_2,
+          prev_median_rt_game: trial.prev_median_rt_game
         };
 
         display_element.innerHTML = '';

@@ -167,6 +167,11 @@ var jsPsychGameChoiceRTInfoKeyboardResponse = (function(jsPsych) {
         type: jsPsych.ParameterType.FLOAT,
         default: null,
         description: "Subject ID for Player 2."
+      },
+      prev_median_rt_game: {
+        type: jsPsych.ParameterType.FLOAT,
+        default: null,
+        description: "Median RT (in seconds) of previous participants for the previous game."
       }
     },
     data: {
@@ -262,6 +267,9 @@ var jsPsychGameChoiceRTInfoKeyboardResponse = (function(jsPsych) {
         new_html += '<div class="panel-choice-rt-info panel-prev" id="prev-game-panel">';
         new_html += buildTable(trial.prev_stimulus, "prev");
         new_html += `<div class="info-text-choice-rt-info">
+          Half of previous participants made their decision in this game within <span class="highlight-rt">${trial.prev_median_rt_game.toFixed(1)}</span> seconds.
+        </div>`;
+        new_html += `<div class="info-text-choice-rt-info">
           Player ${trial.player_number} chose action <span class="highlight-action">${trial.player_action}</span> in <span class="highlight-rt">${trial.player_rt.toFixed(1)}</span> seconds.
         </div>`;
         new_html += '</div>';
@@ -356,7 +364,8 @@ var jsPsychGameChoiceRTInfoKeyboardResponse = (function(jsPsych) {
           player_1_rt_q: trial.player_1_rt_q,
           player_2_rt_q: trial.player_2_rt_q,
           subject_1: trial.subject_1,
-          subject_2: trial.subject_2
+          subject_2: trial.subject_2,
+          prev_median_rt_game: trial.prev_median_rt_game
         };
 
         this.jsPsych.finishTrial(trial_data);
