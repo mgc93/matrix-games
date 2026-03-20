@@ -1,4 +1,5 @@
-/// load modules 
+/// load modules
+require('dotenv').config();
 var express = require("express");
 // instanitate the app
 var app = express();
@@ -11,6 +12,12 @@ const Dropbox = require("dropbox").Dropbox;
 const fetch = require("node-fetch");
 const body_parser = require("body-parser");
 
+
+console.log('Dropbox credentials loaded:',
+    'APP_KEY:', process.env.DROPBOX_APP_KEY ? '✓' : '✗ MISSING',
+    'APP_SECRET:', process.env.DROPBOX_APP_SECRET ? '✓' : '✗ MISSING',
+    'REFRESH_TOKEN:', process.env.DROPBOX_REFRESH_TOKEN ? '✓' : '✗ MISSING'
+);
 
 const dbx = new Dropbox({
     clientId: process.env.DROPBOX_APP_KEY,
@@ -186,6 +193,6 @@ app.post("/subject-status", function (request, response) {
 
 
 
-app.listen(process.env.PORT, function() {
-    console.log("listening to port")
+app.listen(app.get('port'), function() {
+    console.log("listening to port " + app.get('port'));
 });

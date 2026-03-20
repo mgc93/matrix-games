@@ -91,8 +91,9 @@ function startExperiment() {
     var successExp = false;
     var success_guard = {
         type: jsPsychCallFunction,
-        func: () => { 
-            successExp = true; 
+        func: () => {
+            successExp = true;
+            window._experimentDone = true; // detected by simulation script
         }
     }
     
@@ -736,7 +737,7 @@ function startExperiment() {
             To select the bottom row of the table, press  the <b><font color='green'>DOWN</font></b> key. <br/>
             After each choice, look at the red circle at the center of the screen.  <br/>
             <br><br/>
-            You will make a total of <font size=105%; font color = 'white';> 20 </font>decision in this part. <br/>
+            You will make a total of <font size=105%; font color = 'white';> 24 </font>decisions in this part. <br/>
             <br><br/>
             When you are ready, press the  <b>SPACE BAR</b> to continue.  </div>`,
         choices: [" "],
@@ -758,7 +759,7 @@ function startExperiment() {
             To select the bottom row of the table, press  the <b><font color='green'>DOWN</font></b> key. <br/>
             After each choice, look at the red circle at the center of the screen.  <br/>
             <br><br/>
-            You will chose actions in a total of <font size=105%; font color = 'white';> 20 </font> different tables. <br/>
+            You will chose actions in a total of <font size=105%; font color = 'white';> 24 </font> different tables. <br/>
             <br><br/>
             When you are ready, press the  <b>SPACE BAR</b> to continue.  </div>`,
         choices: [" "],
@@ -775,7 +776,7 @@ function startExperiment() {
                 When you are sure of your response, you can click the <b><font color='green'>CONTINUE</font></b> button. <br/>
                 After each choice, look at the red dot at the center of the screen.  <br/>
                 <br><br/>
-                You will make a total of <font size=105%; font color = 'white';> 20 </font> decision in this part. <br/>
+                You will make a total of <font size=105%; font color = 'white';> 24 </font> decisions in this part. <br/>
                 <br><br/>
                 When you are ready, press the  <b>SPACE BAR</b> to continue.  </div>`,
         choices: [" "],
@@ -797,7 +798,7 @@ function startExperiment() {
                 When you are sure of your response, you can click the <b><font color='green'>CONTINUE</font></b> button. <br/>
                 After each choice, look at the red dot at the center of the screen.  <br/>
                 <br><br/>
-                You will make guesses in a total of <font size=105%; font color = 'white';> 20 </font> different tables. <br/>
+                You will make guesses in a total of <font size=105%; font color = 'white';> 24 </font> different tables. <br/>
                 <br><br/>
                 When you are ready, press the  <b>SPACE BAR</b> to continue.  </div>`,
         choices: [" "],
@@ -1010,7 +1011,7 @@ Please answer the following question.</div>
     var control_question_choice_1_response = {
         type: jsPsychHtmlKeyboardResponse,
         stimulus: function () {
-            feedback_question_choice_1 = jsPsych.data.get().last(1).values()[0].correct;
+            feedback_question_choice_1 = questions_choice_data[questions_choice_data.length - 1].correct;
             if (feedback_question_choice_1) {
                 return `
 <div>Your answer was <font size=120%; font color = 'green';> correct </font>!</div>
@@ -1081,7 +1082,7 @@ Please answer the following question. </div>
     var control_question_choice_2_response = {
         type: jsPsychHtmlKeyboardResponse,
         stimulus: function () {
-            feedback_question_choice_2 = jsPsych.data.get().last(1).values()[0].correct;
+            feedback_question_choice_2 = questions_choice_data[questions_choice_data.length - 1].correct;
             if (feedback_question_choice_2) {
                 return `
 <div>Your answer was <font size=120%; font color = 'green';> correct </font>!</div>
@@ -1152,7 +1153,7 @@ Please answer the following question. </div>
     var control_question_choice_3_response = {
         type: jsPsychHtmlKeyboardResponse,
         stimulus: function () {
-            feedback_question_choice_3 = jsPsych.data.get().last(1).values()[0].correct;
+            feedback_question_choice_3 = questions_choice_data[questions_choice_data.length - 1].correct;
             if (feedback_question_choice_3) {
                 return `
 <div>Your answer was <font size=120%; font color = 'green';> correct </font>!</div>
@@ -1223,7 +1224,7 @@ Please answer the following question. </div>
     var control_question_choice_4_response = {
         type: jsPsychHtmlKeyboardResponse,
         stimulus: function () {
-            feedback_question_choice_4 = jsPsych.data.get().last(1).values()[0].correct;
+            feedback_question_choice_4 = questions_choice_data[questions_choice_data.length - 1].correct;
             if (feedback_question_choice_4) {
                 return `
 <div>Your answer was <font size=120%; font color = 'green';> correct </font>!</div>
@@ -1290,7 +1291,7 @@ Please answer the following question. </div>
     var control_question_choice_5_response = {
         type: jsPsychHtmlKeyboardResponse,
         stimulus: function () {
-            feedback_question_choice_5 = jsPsych.data.get().last(1).values()[0].correct;
+            feedback_question_choice_5 = questions_choice_data[questions_choice_data.length - 1].correct;
             if (feedback_question_choice_5) {
                 return `
 <div>Your answer was <font size=120%; font color = 'green';> correct </font>!</div>
@@ -1349,7 +1350,7 @@ Please answer the following question. </div>
     var control_question_choice_6_response = {
         type: jsPsychHtmlKeyboardResponse,
         stimulus: function () {
-            feedback_question_choice_6 = jsPsych.data.get().last(1).values()[0].correct;
+            feedback_question_choice_6 = questions_choice_data[questions_choice_data.length - 1].correct;
             if (feedback_question_choice_6) {
                 return `
 <div>Your answer was <font size=120%; font color = 'green';> correct </font>!</div>
@@ -1456,7 +1457,7 @@ Please answer the following question. </div>
     var control_question_belief_1_response = {
         type: jsPsychHtmlKeyboardResponse,
         stimulus: function () {
-            feedback_question_belief_1 = jsPsych.data.get().last(1).values()[0].correct;
+            feedback_question_belief_1 = questions_belief_data[questions_belief_data.length - 1].correct;
             if (feedback_question_belief_1) {
                 return `
 <div>Your answer was <font size=120%; font color = 'green';> correct </font>!</div>
@@ -1523,7 +1524,7 @@ Please answer the following question. </div>
     var control_question_belief_2_response = {
         type: jsPsychHtmlKeyboardResponse,
         stimulus: function () {
-            feedback_question_belief_2 = jsPsych.data.get().last(1).values()[0].correct;
+            feedback_question_belief_2 = questions_belief_data[questions_belief_data.length - 1].correct;
             if (feedback_question_belief_2) {
                 return `
 <div>Your answer was <font size=120%; font color = 'green';> correct </font>!</div>
@@ -1578,7 +1579,7 @@ Please answer the following question. </div>
     var control_question_belief_3_response = {
         type: jsPsychHtmlKeyboardResponse,
         stimulus: function () {
-            feedback_question_belief_3 = jsPsych.data.get().last(1).values()[0].correct;
+            feedback_question_belief_3 = questions_belief_data[questions_belief_data.length - 1].correct;
             if (feedback_question_belief_3) {
                 return `
 <div>Your answer was <font size=120%; font color = 'green';> correct </font>!</div>
@@ -1652,7 +1653,7 @@ Thank you for signing up!`);
                 },
             },
         ],
-        loop_function: () => choice_count < 5,
+        loop_function: () => choice_count < shuffledGameChoiceWithoutRT.r_y.length
     };
 
 
@@ -1847,7 +1848,7 @@ Thank you for signing up!`);
             }
             --- END OLD VERSION --- */
         ],
-        loop_function: () => choice_player_count < 5 //shuffledGameChoiceWithRT.r_y.length
+        loop_function: () => choice_player_count < shuffledGameChoiceWithRT.r_y.length
     };
 
 
@@ -1884,7 +1885,7 @@ Thank you for signing up!`);
                 },
             },
         ],
-        loop_function: () => belief_count < 5 //shuffledGameBeliefWithoutRT.r_y.length
+        loop_function: () => belief_count < shuffledGameBeliefWithoutRT.r_y.length
     };
 
 
@@ -2123,7 +2124,7 @@ Thank you for signing up!`);
             },
             --- END OLD VERSION --- */
         ],
-        loop_function: () => belief_rt_player_1_count < 5// shuffledGameBeliefWithRT.r_y.length
+        loop_function: () => belief_rt_player_1_count < shuffledGameBeliefWithRT.r_y.length
     };
 
 
@@ -2143,32 +2144,32 @@ Thank you for signing up!`);
         preload,
         fullscreen_enter,
         experiment_overview,
-        // choice_instructions,
-        // control_question_choice_1,
-        // control_question_choice_1_response,
-        // control_question_choice_2,
-        // control_question_choice_2_response,
-        // control_question_choice_3,
-        // control_question_choice_3_response,
-        // control_question_choice_4,
-        // control_question_choice_4_response,
-        // control_question_choice_5,
-        // control_question_choice_5_response,
-        // control_question_choice_6,
-        // control_question_choice_6_response, 
-        // choice_overview,
+        choice_instructions,
+        control_question_choice_1,
+        control_question_choice_1_response,
+        control_question_choice_2,
+        control_question_choice_2_response,
+        control_question_choice_3,
+        control_question_choice_3_response,
+        control_question_choice_4,
+        control_question_choice_4_response,
+        control_question_choice_5,
+        control_question_choice_5_response,
+        control_question_choice_6,
+        control_question_choice_6_response, 
+        choice_overview,
         game_choice,
-        // choice_rt_instructions,
+        choice_rt_instructions,
         choice_rt_overview,
         game_player_choice, 
         break_time,
-        // belief_instructions,
-        // control_question_belief_1,
-        // control_question_belief_1_response,
-        // control_question_belief_2,
-        // control_question_belief_2_response,
-        // control_question_belief_3,
-        // control_question_belief_3_response,
+        belief_instructions,
+        control_question_belief_1,
+        control_question_belief_1_response,
+        control_question_belief_2,
+        control_question_belief_2_response,
+        control_question_belief_3,
+        control_question_belief_3_response,
         belief_overview,
         game_belief,
         belief_rt_instructions,
