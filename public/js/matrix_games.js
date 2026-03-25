@@ -1666,7 +1666,7 @@ Thank you for signing up!`);
                 },
             },
         ],
-        loop_function: () => choice_count < shuffledGameChoiceWithoutRT.r_y.length
+        loop_function: () => choice_count < 4 //shuffledGameChoiceWithoutRT.r_y.length
     };
 
 
@@ -1864,7 +1864,7 @@ Thank you for signing up!`);
             }
             --- END OLD VERSION --- */
         ],
-        loop_function: () => choice_player_count < shuffledGameChoiceWithRT.r_y.length
+        loop_function: () => choice_player_count < 4 //shuffledGameChoiceWithRT.r_y.length
     };
 
 
@@ -1901,7 +1901,7 @@ Thank you for signing up!`);
                 },
             },
         ],
-        loop_function: () => belief_count < shuffledGameBeliefWithoutRT.r_y.length
+        loop_function: () => belief_count < 4 //shuffledGameBeliefWithoutRT.r_y.length
     };
 
 
@@ -2142,7 +2142,7 @@ Thank you for signing up!`);
             },
             --- END OLD VERSION --- */
         ],
-        loop_function: () => belief_rt_player_1_count < shuffledGameBeliefWithRT.r_y.length
+        loop_function: () => belief_rt_player_1_count < 4 //shuffledGameBeliefWithRT.r_y.length
     };
 
 
