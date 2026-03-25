@@ -419,15 +419,20 @@ function startExperiment() {
                 }
             };
 
-            // unique combinations of rt quantiles for player 1 and player 2 and next game number
-            const getUniqueRows = (dataSubset, count) => {
+            // Shared sets across all calls to prevent:
+            // - the same y-game (n_game.y) appearing twice
+            // - the same previous game + players (n_game.x, rt_1, rt_2) appearing twice
+            const getUniqueRows = (dataSubset, count, seenNGameY, seenXPlayerKey) => {
                 const seenKeys = new Set();
                 const selected = [];
                 shuffle(dataSubset);
                 for (const row of dataSubset) {
                     const key = `${row['rt_1']}|${row['rt_2']}|${row['n_game.y']}`;
-                    if (!seenKeys.has(key)) {
+                    const xPlayerKey = `${row['n_game.x']}|${row['rt_1']}|${row['rt_2']}`;
+                    if (!seenKeys.has(key) && !seenNGameY.has(row['n_game.y']) && !seenXPlayerKey.has(xPlayerKey)) {
                         seenKeys.add(key);
+                        seenNGameY.add(row['n_game.y']);
+                        seenXPlayerKey.add(xPlayerKey);
                         selected.push(row);
                     }
                     if (selected.length === count) break;
@@ -437,6 +442,8 @@ function startExperiment() {
 
             const uniqueTypes = Array.from(new Set(data.map(row => row['type_game.x'])));
             const allSelectedRows = [];
+            const seenNGameY = new Set();
+            const seenXPlayerKey = new Set();
 
             // for each game type: get 3 rows where the players chose top and 3 rows where the players chose bottom
             // total of (3 + 3) x 4 = 6 x 4 = 24?
@@ -444,8 +451,8 @@ function startExperiment() {
                 const typeSubset = data.filter(row => row['type_game.x'] === typeVal);
                 const topRows = typeSubset.filter(row => row['player_1_chosen'] === 'top');
                 const bottomRows = typeSubset.filter(row => row['player_1_chosen'] === 'bottom');
-                const selectedTop = getUniqueRows(topRows, 3);
-                const selectedBottom = getUniqueRows(bottomRows, 3);
+                const selectedTop = getUniqueRows(topRows, 3, seenNGameY, seenXPlayerKey);
+                const selectedBottom = getUniqueRows(bottomRows, 3, seenNGameY, seenXPlayerKey);
                 allSelectedRows.push(...selectedTop, ...selectedBottom);
             });
 
